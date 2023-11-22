@@ -54,6 +54,15 @@ final class ViewController: UIViewController {
             print("User entry failed:", error)
         }
         
+        var users : [UserMetadata] = []
+        do {
+            users = try context.fetch(UserMetadata.fetchRequest())
+            for user in users {
+                print("\(String(describing: user.name))")
+            }
+        } catch {
+            print("User fetch failed")
+        }
     }
     
     private func confirmDataSaved() {
