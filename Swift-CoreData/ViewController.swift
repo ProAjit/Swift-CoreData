@@ -19,6 +19,20 @@ final class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let context = DatabaseManager.shared.persistentContainer.viewContext
+        var users : [UserMetadata] = []
+        do {
+            users = try context.fetch(UserMetadata.fetchRequest())
+            for user in users {
+                print(user.email!)
+            }
+        } catch {
+            print("User fetch failed")
+        }
+    }
+    
     @IBAction private func hideKeyBoard(control : UIControl) {
         self.view.endEditing(true)
     }
@@ -40,7 +54,7 @@ final class ViewController: UIViewController {
             return
         }
         
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let context = DatabaseManager.shared.persistentContainer.viewContext
         
         let userData = UserMetadata(context: context)
         userData.name = userName
